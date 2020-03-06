@@ -6,7 +6,25 @@ chrome.contextMenus.create({
     id: 'menuDemo',
     contexts: ['all'],
     onclick: function (info, tab) {
-        alert('context menu alrt');
+
+        console.log('context menu alrt');
+     
+        // keyword=getQueryVariable('q')
+        // window.location=' https://www.google.com/search?atisch=y&q='+keyword
+
+
+        chrome.tabs.getSelected(null, function (tab) {　　// 先获取当前页面的tabID
+            tab.url=tab.url+'&atisch=y'
+            console.log(tab.url)
+            window.location=tab.url
+            chrome.tabs.create({ url: tab.url });
+            // chrome.tabs.sendMessage(tab.id, {invokeFun: "hello"}, function(response) {
+            //     console.log(response);　　// 向content-script.js发送请求信息
+            // });
+        });
+
+        NotificationDemo()
+
     }
 }, function () {
     console.log('contextMenus are create.');
@@ -23,9 +41,9 @@ chrome.browserAction.onClicked.addListener(function callback() {
 
 function NotificationDemo() {
 
-    chrome.notifications.create('id111'+new Date(), {
+    chrome.notifications.create('id111' + new Date(), {
         "type": "basic", "message": "msgx111",
-         "title": "ttt", "iconUrl": "icon.png", "contextMessage": "ctmsg"
+        "title": "ttt", "iconUrl": "icon.png", "contextMessage": "ctmsg"
 
 
     })
@@ -48,4 +66,18 @@ function NotificationDemo() {
 
     //   // 然后显示通知。
     //   notification.show();
+}
+
+
+
+function getQueryVariable(variable)
+{
+    alert('search:: '+  window.location.search)
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
 }

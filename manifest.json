@@ -1,25 +1,38 @@
 {
     "manifest_version": 2,
-  
     "name": "atiSearch",
     "description": "This extension atiSearch.",
     "version": "1.0",
-  
     "permissions": [
-      "https://www.google.com/",
-      "notifications", "contextMenus"
+        "https://www.google.com/",
+        "notifications",
+        "contextMenus"
     ],
     "browser_action": {
-      "default_icon": "icon.png",
-      "default_popup00": "popup.html"
+        "default_icon": "icon.png",
+        "default_popup00": "popup.html"
     },
     "icons": {
         "16": "icon.png",
         "48": "icon.png",
         "128": "icon.png"
-      }
-      ,
-      "background": {
-        "scripts": ["background.js"]
-      }
-  }
+    },
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    // 引入注入脚本
+"content_scripts": [
+    {
+      "js": ["content_script.js"],
+      // 在什么情况下使用该脚本
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      // 什么情况下运行【文档加载开始】
+      "run_at": "document_start"
+    }
+  ]
+}
